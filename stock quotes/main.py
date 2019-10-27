@@ -77,8 +77,9 @@ def check_changes(ticker):
 
                 tickers = emails.get(email)['tickers']
                 for email_ticker in tickers:
-                    min_price = float(emails.get(email)['tickers'][email_ticker]['min_price'])
-                    max_price = float(emails.get(email)['tickers'][email_ticker]['max_price'])
+
+                    min_price = 0 if emails.get(email)['tickers'][email_ticker]['min_price'] == "" else float(emails.get(email)['tickers'][email_ticker]['min_price'])
+                    max_price = 0 if emails.get(email)['tickers'][email_ticker]['max_price'] == "" else float(emails.get(email)['tickers'][email_ticker]['max_price'])
 
                     if ticker == email_ticker:
                         if (min_price > 0) and (price < min_price):
@@ -110,7 +111,11 @@ class GetPriceBackground(Thread):
         # trying get price in each ticker
         while True:
             for ticker in ticker_list:
-                get_price(ticker)
+                try:
+                    #if sever return error (eg limit overquote) program will continue
+                    get_price(ticker)
+                except:
+                    pass
                 check_changes(ticker)
 
                 # coz 'alphavantage' API allow for free only 5 requests per minute

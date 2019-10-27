@@ -10,6 +10,11 @@ def subscribe(email, ticker, min_price, max_price):
             json_data = file.read()
             emails = json.loads(json_data)
             tickers = emails.get(email)['tickers']
+
+            # max 5 tickers
+            if len(tickers) == 5:
+                return
+
     except FileNotFoundError:
         file = open("emails.json", "x")
         file.close()
@@ -45,6 +50,18 @@ def update_tickers(ticker):
         file.write(json_data)
         file.close()
 
+def unsubscribe(email):
+    try:
+        with open("emails.json", "r") as file:
+            json_data = file.read()
+            emails = json.loads(json_data)
+            del emails[email]
+        with open("emails.json", "w") as file:
+            json_data = json.dumps(emails)
+            file.write(json_data)
+    except:
+        pass
+
 
 if __name__ == "__main__":
     form=cgi.FieldStorage()
@@ -55,10 +72,10 @@ if __name__ == "__main__":
     min_price = form.getfirst("min_price", "")
     max_price = form.getfirst("max_price", "")
 
-    if min_price or max_price:
+    if not ticker:
+        # unsubscribe
+        unsubscribe(email)
+    elif min_price or max_price:
         #subscribe
         subscribe(email, ticker, min_price, max_price)
         update_tickers(ticker)
-    else:
-        # unsubscribe
-        print('unsub done')
