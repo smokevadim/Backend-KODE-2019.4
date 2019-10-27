@@ -65,7 +65,7 @@ def unsubscribe(email):
 
 if __name__ == "__main__":
     form=cgi.FieldStorage()
-    print('Content-type: text/html\n')
+    #print('Content-type: text/html\n')
 
     email = form.getfirst("email", "")
     ticker = form.getfirst("ticker", "")
@@ -73,9 +73,12 @@ if __name__ == "__main__":
     max_price = form.getfirst("max_price", "")
 
     if not ticker:
+
         # unsubscribe
         unsubscribe(email)
+
     elif min_price or max_price:
+
         #subscribe
         subscribe(email, ticker, min_price, max_price)
         update_tickers(ticker)
