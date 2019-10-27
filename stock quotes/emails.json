@@ -1,1 +1,1 @@
-{"123@mail.ru": {"tickers": {"NOC": {"min_price": "200", "max_price": "300"}, "TSLA": {"min_price": "200", "max_price": "300"}}}}
+{"123@mail.ru": {"tickers": {"NOC": {"min_price": "200", "max_price": "300"}, "TSLA": {"min_price": "200", "max_price": "300"}}}, "smoke.kaliningrad@gmail.com": {"tickers": {"TSLA": {"min_price": "400", "max_price": "200"}}}}

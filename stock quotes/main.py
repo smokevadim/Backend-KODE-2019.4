@@ -77,20 +77,19 @@ def check_changes(ticker):
 
                 tickers = emails.get(email)['tickers']
                 for email_ticker in tickers:
-                    min_price = float(email_ticker['min_price'])
-                    max_price = float(email_ticker['max_price'])
+                    min_price = float(emails.get(email)['tickers'][email_ticker]['min_price'])
+                    max_price = float(emails.get(email)['tickers'][email_ticker]['max_price'])
 
                     if ticker == email_ticker:
-                        message = ''
                         if (min_price > 0) and (price < min_price):
-                            message = 'Price {} under minimum {}'.format(price, min_price)
+                            message = '{} price {} under minimum {}'.format(ticker, price, min_price)
 
                             # here we calling send email function but specification not asking for it
                             # and we just outputting text on display
                             print('{}: {}'.format(email, message))
 
                         if (max_price > 0) and (price > max_price):
-                            message = 'Price {} above maximum {}'.format(price, max_price)
+                            message = '{} price {} above maximum {}'.format(ticker, price, max_price)
 
                             # here we calling send email function but specification not asking for it
                             # and we just outputting text on display
@@ -126,8 +125,8 @@ class HTTPPOSTServer(Thread):
 
 
         server_address = ("localhost", 8000)
-        # same directory as html file
-        CGIHTTPRequestHandler.cgi_directories = ["/","\\"]
+        # same directory as html file. Tested only in OS Windows
+        CGIHTTPRequestHandler.cgi_directories = ["\\","/"]
         httpd = HTTPServer(server_address, CGIHTTPRequestHandler)
 
         # waiting for POST request
